@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { EntityCard } from "./EntityCard";
 import { LineChart } from "../../Components/LineChart";
-import { GRAPH_ALLOWED_ENTITIES } from "../../utils/GraphAllowedEntities";
+import { GRAPH_ALLOWED_ENTITIES } from "../../utils/graphAllowedEntities";
 
 interface Entity {
   id: number;

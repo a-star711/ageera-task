@@ -53,7 +53,7 @@ export const LoginPage = () => {
         <form onSubmit={handleSubmit}>
           <TextField
             fullWidth
-            label="Username"
+            label="Email"
             variant="outlined"
             margin="normal"
             value={email}

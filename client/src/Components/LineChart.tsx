@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ReactApexChart, { Props as ApexChartProps } from "react-apexcharts";
 import axios from "axios";
-import { GRAPH_ALLOWED_ENTITIES } from "../utils/GraphAllowedEntities";
+import { GRAPH_ALLOWED_ENTITIES } from "../utils/graphAllowedEntities";
 
 interface LineChartProps {
   entity: {
