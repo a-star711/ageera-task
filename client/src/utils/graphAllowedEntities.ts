@@ -1,0 +1,1 @@
+export const GRAPH_ALLOWED_ENTITIES = ["SOLAR", "BESS", "CONSUMPTION", "GRID"];

@@ -1,0 +1,46 @@
+[
+    {
+        "id": 1162,
+        "name": "Solar",
+        "power": 145000,
+        "status": "Ative",
+        "irradiance": 600,
+        "entityType": "SOLAR",
+        "dailyEnergy": 320000
+    },
+    {
+        "id": 1161,
+        "revision": 3,
+        "name": "BESS",
+        "power": 400000,
+        "capacity": 320000,
+        "entityType": "BESS",
+        "dailyEnergy": 120000
+    },
+    {
+        "id": 1190,
+        "capacity": 480,
+        "power": 400000,
+        "runHours": 3.2,
+        "status": "MANUAL",
+        "name": "Generator",
+        "entityType": "GENERATOR"
+    },
+    {
+        "id": 1163,
+        "revision": 3,
+        "name": "Grid",
+        "power": 2769164,
+        "capacity": 10000,
+        "powerFactor": 0.96,
+        "entityType": "GRID"
+    },
+    {
+        "id": 1164,
+        "power": 320000,
+        "capacity": null,
+        "dailyEnergy": 4324564,
+        "name": "Load Factory",
+        "entityType": "CONSUMPTION"
+    }
+]
