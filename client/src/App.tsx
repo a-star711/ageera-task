@@ -5,7 +5,7 @@ import { LoginPage } from "./Pages/Login/LoginPage";
 import { EntitiesPage } from "./Pages/Entities/EntitiesPage";
 
 import Header from "./Components/Header";
-import { NotFoundPage } from "./Components/NotFound";
+import { NotFoundPage } from "./Pages/NotFound/NotFound";
 
 function App() {
   return (
