@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import {
   Container,
@@ -10,6 +9,7 @@ import {
   Paper,
   Box,
 } from "@mui/material";
+import { loginReq } from "../../api/login";
 
 export const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -20,17 +20,13 @@ export const LoginPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:3000/user/login", {
-        email,
-        password,
-      });
+    setError("");
 
-      if (response.data.success) {
+    try {
+      const data = await loginReq(email, password);
+      if (data.success) {
         login();
         navigate("/entities");
-      } else {
-        setError("Invalid username or password");
       }
     } catch (err) {
       setError("Login failed. Please try again.");
@@ -40,7 +36,7 @@ export const LoginPage = () => {
   return (
     <Container maxWidth="xs">
       <Paper elevation={3} sx={{ padding: 4, mt: 8, textAlign: "center" }}>
-        <Typography variant="h5" fontWeight="bold" gutterBottom>
+        <Typography fontWeight="bold" gutterBottom>
           Login
         </Typography>
 

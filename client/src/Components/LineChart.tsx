@@ -1,16 +1,12 @@
 import { useState, useEffect } from "react";
 import ReactApexChart, { Props as ApexChartProps } from "react-apexcharts";
-import axios from "axios";
 import { GRAPH_ALLOWED_ENTITIES } from "../utils/graphAllowedEntities";
+import { fetchGraphDataByEntity } from "../api/fetchGraphData";
 
 interface LineChartProps {
-  entity: {
-    id: number;
-    entityType: string;
-  };
+  entityType: string;
 }
-
-export const LineChart = ({ entity }: LineChartProps) => {
+export const LineChart = ({ entityType }: LineChartProps) => {
   const [state, setState] = useState<ApexChartProps>({
     series: [],
     options: {
@@ -36,60 +32,52 @@ export const LineChart = ({ entity }: LineChartProps) => {
   });
 
   useEffect(() => {
-    if (GRAPH_ALLOWED_ENTITIES.includes(entity.entityType)) {
-      axios
-        .get(`http://localhost:3000/entities/${entity.entityType}/graph-data`)
-        .then((response) => {
-          const graphData = response.data;
+    const fetchData = async () => {
+      if (!GRAPH_ALLOWED_ENTITIES.includes(entityType)) return;
 
-          let series = [];
+      try {
+        const graphData = await fetchGraphDataByEntity(entityType);
 
-          if (entity.entityType === "BESS") {
-            const dischargeSeries = {
-              name: "Discharge",
-              data: graphData
-                .filter((item: { value: number }) => item.value >= 0)
-                .map((item: { timestamp: string; value: number }) => ({
-                  x: new Date(item.timestamp).getTime(),
-                  y: item.value,
-                })),
-            };
+        const series =
+          entityType === "BESS"
+            ? [
+                {
+                  name: "Discharge",
+                  data: graphData
+                    .filter(({ value }) => value >= 0)
+                    .map(({ timestamp, value }) => ({
+                      x: new Date(timestamp).getTime(),
+                      y: value,
+                    })),
+                },
+                {
+                  name: "Charge",
+                  data: graphData
+                    .filter(({ value }) => value < 0)
+                    .map(({ timestamp, value }) => ({
+                      x: new Date(timestamp).getTime(),
+                      y: Math.abs(value),
+                    })),
+                },
+              ]
+            : [
+                {
+                  name: "Value",
+                  data: graphData.map(({ timestamp, value }) => ({
+                    x: new Date(timestamp).getTime(),
+                    y: value < 0 ? 0 : value,
+                  })),
+                },
+              ];
 
-            const chargeSeries = {
-              name: "Charge",
-              data: graphData
-                .filter((item: { value: number }) => item.value < 0)
-                .map((item: { timestamp: string; value: number }) => ({
-                  x: new Date(item.timestamp).getTime(),
-                  y: Math.abs(item.value),
-                })),
-            };
+        setState((prevState) => ({ ...prevState, series }));
+      } catch (error) {
+        console.error("Failed to fetch graph data:", error);
+      }
+    };
 
-            series = [dischargeSeries, chargeSeries];
-          } else {
-            series = [
-              {
-                name: "Value",
-                data: graphData.map(
-                  (item: { timestamp: string; value: number }) => ({
-                    x: new Date(item.timestamp).getTime(),
-                    y: item.value < 0 ? 0 : item.value,
-                  })
-                ),
-              },
-            ];
-          }
-
-          setState((prevState) => ({
-            ...prevState,
-            series,
-          }));
-        })
-        .catch((error) => {
-          console.error("Failed to fetch graph data:", error);
-        });
-    }
-  }, [entity]);
+    fetchData();
+  }, [entityType]);
 
   return (
     <div>
