@@ -37,6 +37,7 @@ export class EntityService {
     };
 
     const column = columnMap[entityType.toLowerCase()];
+    console.log(column);
     if (!column) {
       this.logger.error(
         `No column mapping found for entity type: ${entityType}`,
